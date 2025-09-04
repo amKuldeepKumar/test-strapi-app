@@ -5,27 +5,12 @@ module.exports = ({ env }) => {
 
   const connections = {
     postgres: {
-      connection: env("DATABASE_URL")
-        ? {
-            connectionString: env("DATABASE_URL"),
-            ssl: env.bool("DATABASE_SSL", true) && {
-              rejectUnauthorized: false,
-            },
-            schema: env("DATABASE_SCHEMA", "public"),
-          }
-        : {
-            host: env("PGHOST", "127.0.0.1"),
-            port: env.int("PGPORT", 5432),
-            database: env("PGDATABASE", "postgres"),
-            user: env("PGUSER", "postgres"),
-            password: env("PGPASSWORD", "postgres"),
-            ssl: env.bool("DATABASE_SSL", true) && {
-              rejectUnauthorized: false,
-            },
-            schema: env("DATABASE_SCHEMA", "public"),
-            // Force IPv4 connection
-            family: 4 // <-- Add this line
-          },
+      connection: {
+        connectionString: env("DATABASE_URL") || `postgresql://${env("PGUSER", "postgres")}:${env("PGPASSWORD", "postgres")}@${env("PGHOST", "127.0.0.1")}:${env.int("PGPORT", 5432)}/${env("PGDATABASE", "postgres")}`,
+        ssl: env.bool("DATABASE_SSL", true) ? { rejectUnauthorized: false } : false,
+        schema: env("DATABASE_SCHEMA", "public"),
+        family: 4, // Force IPv4
+      },
       pool: {
         min: env.int("DATABASE_POOL_MIN", 2),
         max: env.int("DATABASE_POOL_MAX", 10),
@@ -34,11 +19,7 @@ module.exports = ({ env }) => {
 
     sqlite: {
       connection: {
-        filename: path.join(
-          __dirname,
-          "..",
-          env("DATABASE_FILENAME", ".tmp/data.db")
-        ),
+        filename: path.join(__dirname, "..", env("DATABASE_FILENAME", ".tmp/data.db")),
       },
       useNullAsDefault: true,
     },
