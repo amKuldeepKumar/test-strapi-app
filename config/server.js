@@ -1,10 +1,7 @@
 module.exports = ({ env }) => ({
-  host: env('HOST', '0.0.0.0'),
-  port: env.int('PORT', 1337),
+  host: '0.0.0.0', // required so it's accessible externally
+  port: env.int('PORT', 1337), // use Render's provided PORT
   app: {
-    keys: env.array('APP_KEYS'),
-  },
-  webhooks: {
-    populateRelations: env.bool('WEBHOOKS_POPULATE_RELATIONS', false),
+    keys: env.array('APP_KEYS', ['yourAppKey1', 'yourAppKey2']),
   },
 });
