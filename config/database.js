@@ -6,7 +6,7 @@ module.exports = ({ env }) => {
   const connections = {
     postgres: {
       connection: {
-        connectionString: env("DATABASE_URL") || `postgresql://${env("PGUSER", "postgres")}:${env("PGPASSWORD", "postgres")}@${env("PGHOST", "127.0.0.1")}:${env.int("PGPORT", 5432)}/${env("PGDATABASE", "postgres")}`,
+        connectionString: env("DATABASE_URL"),
         ssl: env.bool("DATABASE_SSL", true) ? { rejectUnauthorized: false } : false,
         schema: env("DATABASE_SCHEMA", "public"),
         family: 4, // Force IPv4
@@ -16,7 +16,6 @@ module.exports = ({ env }) => {
         max: env.int("DATABASE_POOL_MAX", 10),
       },
     },
-
     sqlite: {
       connection: {
         filename: path.join(__dirname, "..", env("DATABASE_FILENAME", ".tmp/data.db")),
