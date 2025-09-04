@@ -1,7 +1,7 @@
 const path = require("path");
 
 module.exports = ({ env }) => {
-  const client = env("DATABASE_CLIENT", "sqlite");
+  const client = env("DATABASE_CLIENT", "postgres");
 
   const connections = {
     postgres: {
@@ -14,7 +14,7 @@ module.exports = ({ env }) => {
             schema: env("DATABASE_SCHEMA", "public"),
           }
         : {
-            host: env("PGHOST", "127.0.0.1"), // fallback to IPv4
+            host: env("PGHOST", "127.0.0.1"),
             port: env.int("PGPORT", 5432),
             database: env("PGDATABASE", "postgres"),
             user: env("PGUSER", "postgres"),
@@ -23,6 +23,8 @@ module.exports = ({ env }) => {
               rejectUnauthorized: false,
             },
             schema: env("DATABASE_SCHEMA", "public"),
+            // Force IPv4 connection
+            family: 4 // <-- Add this line
           },
       pool: {
         min: env.int("DATABASE_POOL_MIN", 2),
