@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_global_seos",
+  "info": {
+    "displayName": "seo"
+  },
+  "options": {},
+  "attributes": {
+    "MetaTitle": {
+      "type": "string"
+    },
+    "MetaDescription": {
+      "type": "text"
+    },
+    "MetaKeywords": {
+      "type": "text"
+    },
+    "CanonicalURL": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}
